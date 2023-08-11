@@ -756,12 +756,11 @@ public class FlutterBluePlusPlugin implements FlutterPlugin, MethodCallHandler, 
 
       case "requestConnectionPriority":
       {
-        Object[] args = (Object[])call.arguments;
-        String deviceId = (String)args[0];
+        String deviceId = call.argument("deviceId");
 
         try {
           BluetoothGatt gatt = locateGatt(deviceId);
-          int connectionPriority = (int)args[1];
+          int connectionPriority = call.argument("connectionPriority");
           if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
              result.success(gatt.requestConnectionPriority(connectionPriority));
           } else {

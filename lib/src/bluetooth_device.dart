@@ -189,8 +189,10 @@ class BluetoothDevice {
 
   Future<bool?> requestConnectionPriority(ConnectionPriority priority) async {
     if (Platform.isAndroid) {
-      return FlutterBluePlus.instance._channel
-          .invokeMethod('requestConnectionPriority', [id.toString(), priority.value]).then<bool?>((value) => value);
+      return FlutterBluePlus.instance._channel.invokeMethod('requestConnectionPriority', {
+        "deviceId": id.toString(),
+        "connectionPriority": priority.value,
+      }).then<bool?>((value) => value);
     } else {
       return false;
     }
@@ -208,9 +210,19 @@ class BluetoothDevice {
   }
 }
 
-enum BluetoothDeviceType { unknown, classic, le, dual }
+enum BluetoothDeviceType {
+  unknown,
+  classic,
+  le,
+  dual,
+}
 
-enum BluetoothDeviceState { disconnected, connecting, connected, disconnecting }
+enum BluetoothDeviceState {
+  disconnected,
+  connecting,
+  connected,
+  disconnecting,
+}
 
 enum ConnectionPriority {
   low(2),
