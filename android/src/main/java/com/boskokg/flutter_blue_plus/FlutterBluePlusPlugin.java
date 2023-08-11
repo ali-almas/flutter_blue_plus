@@ -754,6 +754,24 @@ public class FlutterBluePlusPlugin implements FlutterPlugin, MethodCallHandler, 
           break;
         }
 
+      case "requestConnectionPriority":
+      {
+        String deviceId = (String)call.arguments[0];
+
+        try {
+          BluetoothGatt gatt = locateGatt(deviceId);
+          int connectionPriority = (int)call.arguments[1];
+          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+             result.success(gatt.requestConnectionPriority(connectionPriority));
+          } else {
+            result.error("requestConnectionPriority error", "Only supported on devices >= API 21 (Lollipop). This device == " + Build.VERSION.SDK_INT, null);
+          }
+        } catch(Exception e) {
+          result.error("requestConnectionPriority error", e.getMessage(), e);
+        }
+        break;
+      }
+
       default:
       {
         result.notImplemented();
